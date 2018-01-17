@@ -1,5 +1,6 @@
 #inspired by https://github.com/usmanbashir/haikunator 
 
+
 default_adjectives = c(
   'aged', 'ancient', 'autumn', 'billowing', 'bitter', 'black', 'blue', 'bold',
   'broad', 'broken', 'calm', 'cold', 'cool', 'crimson', 'curly', 'damp',
@@ -31,31 +32,26 @@ default_nouns = c(
 )
 
 
-generateToken = function(length = 4){
-  paste(sample( 1:9, length, replace=TRUE ), collapse="" )
+
+
+haikunate = function(token_length = 4, delimiter = '-', seed_value = NA){
   
-}
-
-
-generateToken(6)
-
-sample(default_adjectives,1)
-
-haikunate = function(token_length = 4, delimiter = '-'){
+  if (!is.na(seed_value)) set.seed(seed_value)
+  
   if (token_length > 0) {
   
     paste(sample(default_adjectives,1),
           sample(default_adjectives,1),
-          generateToken(token_length),
+          paste(sample( 1:9, token_length, replace=TRUE ), collapse="" ),
           sep = delimiter)
   }
   
   else {
     paste(sample(default_adjectives,1),
           sample(default_adjectives,1),
-          #generateToken(token_length),
+          # paste(sample( 1:9, token_length, replace=TRUE ), collapse="" ),
           sep = delimiter)
   }
 }
 
-haikunate(5,'_')
+haikunate(4,'.',235)
