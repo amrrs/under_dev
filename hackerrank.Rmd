@@ -1,0 +1,138 @@
+---
+title: "Hacker Women in Tech - Hackerrank Analysis"
+output: 
+    html_document:
+        toc: yes
+        theme: cosmo
+        highlight: tango
+        code_folding: hide
+---
+
+### What is Hackerrank?
+
+In one line, Hackerrank is for Developers/Coders/Programmers, what Kaggle is Data Scientists/Analysts. HackerRank is a technology company that focuses on competitive programming challenges with an attempt to gamify the coding habit and also to act as a gateway for companies to connect with (Quality) Developers.
+
+### Some History
+
+HackerRank, formerly known as InterviewStreet, founded by two NIT (National Institute of Technology) Trichy (India) alumni Vivek Ravisankar and Hari Karunanidhi. HackerRank is a Y Combinator-backed company, and was the first Indian company accepted into Y Combinator.
+
+
+### Focus of this Analysis
+
+While this is a general survey dataset, the focus of this analysis is to understand **Women in Tech**. 
+
+![Depiction of Women in Tech](https://ischool.syr.edu/infospace/wp-content/files/2016/11/women-in-tech.jpg)
+
+Women in Tech is with no doubt a minority with so many things all around the world going around empowering women, wage gap and so on. Hence, Women in Tech has been prioritized in this analysis to see if any of the outcome could help that initiative. 
+
+Let us read the main dataset and requried packages for our analysis. 
+
+```{r}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, fig.width=10, fig.height=6)
+
+```
+
+```{r}
+
+values <- read.csv('../input/HackerRank-Developer-Survey-2018-Values.csv', header = T, stringsAsFactors = F)
+
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+library(knitr)
+```
+
+### Minority Check
+
+While we've been hearing that Women in Tech is underrepresented, Shouldn't we verify it? 
+
+
+```{r}
+
+values %>% group_by(q3Gender) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% mutate(n = (n/ sum(n)) * 100) %>% kable()
+
+p1 <- values %>% group_by(q3Gender) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% mutate(n = (n/ sum(n)) * 100) %>% ggplot() + geom_bar(aes(q3Gender, n, fill = q3Gender),stat = 'identity')  
+
+ggplotly(p1)
+```
+
+That answers. Considering this survey was completely randomized, A Ratio of approximately 16.5% to 83.4% (Female to Male Ratio) is nothing but a definite under-representation. 
+
+
+### Male vs Female Age of Beginning to code 
+
+```{r}
+
+values %>% group_by(q3Gender, q1AgeBeginCoding) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100) %>% kable()
+
+p2 <- values %>% group_by(q3Gender, q1AgeBeginCoding) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100) %>% ggplot() + geom_bar(aes(q3Gender, n, fill = q1AgeBeginCoding),stat = 'identity')  
+
+ggplotly(p2)
+```
+
+* This shows the first-mover advantage. While **22%** of men have started coding at the age of bracket of `11 - 15 yrs`, only **13%** of women have done so. 
+* Irony is that, even with the age bracket `5-10 yrs` Men's proportion is **4x** more than their female counterpart.
+
+This is clearly a problem with **Parenting** and also our School system which seems to emphasis Men to start coding at an early age while not exposing Girl kids to code at the same age as when Boys start coding. 
+
+### Does starting age of coding continues to College?
+
+```{r}
+
+values %>% group_by(q3Gender, q5DegreeFocus) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100) %>% kable()
+
+p3 <- values %>% group_by(q3Gender, q5DegreeFocus) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100) %>% ggplot() + geom_bar(aes(q3Gender, n, fill = q5DegreeFocus),stat = 'identity')  
+
+ggplotly(p3)
+
+```
+
+As it's obvious, Men have pursued more Computer Science degree while Women haven't. One thing to note here is the observer shouldn't fall for the percentage point difference fallacy here. We're currently talking about a selective sample - which visits Hackerrank. 
+
+```{r}
+
+values %>% group_by(q3Gender, q5DegreeFocus) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q5DegreeFocus) %>% mutate(n = (n/ sum(n)) * 100) %>% kable()
+
+
+p4 <- values %>% group_by(q3Gender, q5DegreeFocus) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q5DegreeFocus) %>% mutate(n = (n/ sum(n)) * 100) %>% ggplot() + geom_bar(aes(q3Gender, n, fill = q5DegreeFocus),stat = 'identity')  
+
+ggplotly(p4)
+
+```
+
+Out of the entire Computer Science crowd that was surveyed here, only 16% are Women and the rest 83% are Men. 
+
+So forget about Women in Tech being underrepresented, Women who study relevant course (Technical Education) itself is very lagging. 
+
+### Women - Students : Sign of Hope!
+
+
+```{r}
+
+values %>% group_by(q3Gender, q8Student) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100) %>% kable()
+
+
+p5 <- values %>% group_by(q3Gender, q8Student) %>% 
+  filter(q3Gender %in% c('Male','Female')) %>% count() %>% ungroup() %>% group_by(q3Gender) %>% mutate(n = (n/ sum(n)) * 100)  %>% ggplot() + geom_bar(aes(q3Gender, n, fill = q8Student),stat = 'identity')  
+
+ggplotly(p5)
+
+```
+
+
+This should ideally complete the story of underrepresenation. Because, of the entire female respondents close to 52% are students which means, even within the Female respondents Developers who are female (Women in Tech) is a minority. While for very obvious reasons that's not the case with Male. 
+
+But on the flip side, this is one sign of hope. How? With more Women Students participating in Hackerrank, it sounds like the underrespented community has finally got their wake up call and have started to be active on Developer Forums and striving for a better future, thus shaping up the future of Women in Tech.
