@@ -1,0 +1,70 @@
+---
+title: "keywords_match"
+author: "nulldata"
+date: "May 30, 2018"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Sample Dataset creation
+
+
+
+```{r}
+#install.packages('itunesr')
+library(itunesr)
+uber_reviews <- getReviews(368677368,'us',1)
+uber_reviews <- uber_reviews[,c(5,6)]
+```
+
+### Column we are interested in
+
+```{r}
+uber_reviews
+```
+
+### Pattern matching
+
+We will create four new columns - driver, easy, app, time
+
+
+```{r}
+uber_reviews$driver <- ifelse(grepl('driver',tolower(uber_reviews$Review)),
+                              'driver',
+                              '')
+
+uber_reviews$easy <- ifelse(grepl('easy',tolower(uber_reviews$Review)),
+                              'easy',
+                              '')
+
+uber_reviews$app <- ifelse(grepl('app',tolower(uber_reviews$Review)),
+                              'app',
+                              '')
+
+
+uber_reviews$time <- ifelse(grepl('time',tolower(uber_reviews$Review)),
+                              'time',
+                              '')
+
+```
+
+
+### Output Dataframe
+
+```{r}
+uber_reviews
+```
+
+
+### Rough Combining 
+
+```{r}
+#library(tidyr)
+
+tidyr::unite(uber_reviews, 'newcol', -c(Review,Rating), sep = ',', remove = FALSE)
+
+```
+
