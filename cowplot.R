@@ -23,15 +23,15 @@
     geom_point(alpha = 0.2)
   
   
-  #Arranging Multiple Plots in Columns
+  #Arranging Multiple Plots in Columns - 2 in 1
   
   plot_grid(plot_histogram_SL,
             plot_histogram_PL_SL,
             labels = c('Fig B','Fig C'),
             label_x = 0.2,
-            ncol = 2)
+            ncol = 2) -> new_p1
   
-  #Arranging Multiple Plots in Rows
+  #Arranging Multiple Plots in Rows - 2 in 1
   
   plot_grid(plot_histogram_PL,
             plot_histogram_SL,
@@ -39,4 +39,28 @@
             label_x = 0.2,
             nrow = 2)
   
+  #A cowplot plot with ggplot - 3 in 1
+  
+    
+  plot_grid(plot_histogram_SL,
+            plot_histogram_PL_SL,
+            labels = c('Fig B','Fig C'),
+            label_x = 0.2,
+            ncol = 2) -> new_p1
+  
+  plot_grid(plot_histogram_PL,
+            new_p1,
+            #labels = c('Fig A','Fig B'),
+            label_x = 0.2,
+            nrow = 2)
+  
+  # 4 in 1
+  
+    plot_grid(plot_histogram_PL,
+            plot_histogram_SL,
+            labels = c('Fig A','Fig B'),
+            label_x = 0.2,
+            nrow = 2) -> new_p2
+    
+    plot_grid(new_p1,new_p2)
   
