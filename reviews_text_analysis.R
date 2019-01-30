@@ -7,7 +7,7 @@ flipkart_reviews <- getReviews("742044692","in",1)
 
 model <- udpipe_download_model(language = "english")
 udmodel_english <- udpipe_load_model(file = 'english-ud-2.0-170801.udpipe')
-udmodel_english <- udpipe_load_model(file = 'english-ud-2.0-170801.udpipe')
+#udmodel_english <- udpipe_load_model(file = 'english-ud-2.0-170801.udpipe')
 
 reviews_only <- flipkart_reviews$Review
 
